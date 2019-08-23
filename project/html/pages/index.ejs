@@ -16,6 +16,16 @@
 
   <button onclick="handleSignIn()">Login</button>
 
+  <form onsubmit="handleMessageFormSubmit()" action="#">
+    Title:<br>
+    <input id="post-title"></br>
+    Body:<br>
+    <textarea id="post-body"></textarea></br>
+    <button>Submit</button>
+  </form>
+
+  <div id="post-listing"></div>
+
   <div class="error-message"></div>
 
 <div class="city">
