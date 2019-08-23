@@ -2,6 +2,10 @@
 //   getWeather();
 // })
 
+$(document).ready(function(){
+  getPosts();
+})
+
 function getWeather(searchQuery) {
   var url = "https://api.openweathermap.org/data/2.5/weather?q="+searchQuery+"&units=metric&APPID="+apiKey;
 
@@ -41,4 +45,43 @@ function handleSignIn() {
   var credential = error.credential;
   // ...
 });
+}
+
+function addMessage(postTitle, postBody) {
+  var postData = {
+    title: postTitle,
+    body: postBody
+  }
+
+  var database = firebase.database().ref("posts");
+
+  var newPostRef = database.push();
+  newPostRef.set(postData, function(error) {
+    if (error) {
+      // The write failed...
+    } else {
+      // Data saved successfully!
+      window.location.reload();
+    }
+  });
+}
+
+function handleMessageFormSubmit(){
+  var postTitle = $("#post-title").val();
+  var postBody = $("#post-body").val();
+  addMessage(postTitle, postBody);
+}
+
+function getPosts() {
+
+  return firebase.database().ref("posts").once('value').then(function(snapshot) {
+      var posts = snapshot.val();
+      console.log(posts);
+
+      for(var postKey in posts) {
+          var post = posts[postKey];
+          $("#post-listing").append("<div>"+post.title+" - "+post.body+"</div>");
+      }
+    });
+
 }
